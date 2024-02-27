@@ -1,19 +1,19 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '..';
 
 const schema = z.object({
-  username: z.string().nonempty({ message: 'username field is required' }),
-  password: z.string().nonempty({ message: 'password field is required' }),
+  username: z.string().min(1, { message: 'username field is required' }),
+  password: z.string().min(1, { message: 'password field is required' }),
 });
 
-type FormData = z.infer<typeof schema> & { unusedProperty: string };
+type FormData = z.infer<typeof schema>;
 
 interface Props {
-  onSubmit: (data: FormData) => void;
+  onSubmit: SubmitHandler<FormData>;
 }
 
 function TestComponent({ onSubmit }: Props) {
@@ -21,7 +21,7 @@ function TestComponent({ onSubmit }: Props) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm({
     resolver: zodResolver(schema), // Useful to check TypeScript regressions
   });
 

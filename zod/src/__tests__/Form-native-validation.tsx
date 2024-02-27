@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { z } from 'zod';
@@ -9,18 +9,18 @@ const USERNAME_REQUIRED_MESSAGE = 'username field is required';
 const PASSWORD_REQUIRED_MESSAGE = 'password field is required';
 
 const schema = z.object({
-  username: z.string().nonempty({ message: USERNAME_REQUIRED_MESSAGE }),
-  password: z.string().nonempty({ message: PASSWORD_REQUIRED_MESSAGE }),
+  username: z.string().min(1, { message: USERNAME_REQUIRED_MESSAGE }),
+  password: z.string().min(1, { message: PASSWORD_REQUIRED_MESSAGE }),
 });
 
 type FormData = z.infer<typeof schema>;
 
 interface Props {
-  onSubmit: (data: FormData) => void;
+  onSubmit: SubmitHandler<FormData>;
 }
 
 function TestComponent({ onSubmit }: Props) {
-  const { register, handleSubmit } = useForm<FormData>({
+  const { register, handleSubmit } = useForm({
     resolver: zodResolver(schema),
     shouldUseNativeValidation: true,
   });

@@ -9,7 +9,8 @@ describe('zodResolver', () => {
 
     const result = await zodResolver(schema, undefined, {
       raw: true,
-    })(validData, undefined, {
+      //todo
+    })(validData as any, undefined, {
       fields,
       shouldUseNativeValidation,
     });
@@ -24,7 +25,8 @@ describe('zodResolver', () => {
 
     const result = await zodResolver(schema, undefined, {
       mode: 'sync',
-    })(validData, undefined, { fields, shouldUseNativeValidation });
+      //todo
+    })(validData as any, undefined, { fields, shouldUseNativeValidation });
 
     expect(parseSpy).toHaveBeenCalledTimes(1);
     expect(parseAsyncSpy).not.toHaveBeenCalled();
@@ -82,10 +84,15 @@ describe('zodResolver', () => {
     const schemaWithCustomError = schema.refine(() => {
       throw Error('custom error');
     });
-    const promise = zodResolver(schemaWithCustomError)(validData, undefined, {
-      fields,
-      shouldUseNativeValidation,
-    });
+    //todo
+    const promise = zodResolver(schemaWithCustomError)(
+      validData as any,
+      undefined,
+      {
+        fields,
+        shouldUseNativeValidation,
+      },
+    );
 
     await expect(promise).rejects.toThrow('custom error');
   });

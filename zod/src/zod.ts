@@ -1,7 +1,7 @@
 import { appendErrors, FieldError, FieldErrors } from 'react-hook-form';
 import { z, ZodError } from 'zod';
 import { toNestErrors, validateFieldsNatively } from '@hookform/resolvers';
-import type { Resolver } from './types';
+import type { ZodResolver } from './types';
 
 const isZodError = (error: any): error is ZodError => error.errors != null;
 
@@ -55,7 +55,7 @@ const parseErrorSchema = (
   return errors;
 };
 
-export const zodResolver: Resolver =
+export const zodResolver: ZodResolver =
   (schema, schemaOptions, resolverOptions = {}) =>
   async (values, _, options) => {
     try {
